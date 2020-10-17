@@ -3,12 +3,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class InputCascadedCNN(nn.Module):
+class LocalCascadeCNN(nn.Module):
 
 
     def __init__(self):
 
-        super(InputCascadedCNN, self).__init__()
+        super(LocalCascadeCNN, self).__init__()
 
         ''' 
         
@@ -112,19 +112,22 @@ class InputCascadedCNN(nn.Module):
         # Output From The First CNN
         out1 = self.output1(z1)
 
-        # Concatinating Output From The First CNN And Input
-        input_two = out1 + x
         
         # Forward Pass Through Second CNN First Path
-        x2 = self.two_cnn_path_two_conv1(input_two)
+        x2 = self.two_cnn_path_two_conv1(input)
         x2 = torch.max(x2)
         x2 = self.two_cnn_path_two_pool1(x2)
+
+        # Concatinating Output From The First CNN And First Layer Of First Path Of Second CNN
+        x2 = torch.cat((out1, x2), 0)
+
+        # Forward Pass Continue With The New Input
         x2 = self.two_cnn_path_two_conv2(x2)
         x2 = torch.max(x2)
         x2 = self.two_cnn_path_two_pool2(x2)
 
         # Forward Pass Through Second CNN Second Path
-        y2 = self.two_cnn_path_two_conv(input_two)
+        y2 = self.two_cnn_path_two_conv(input)
 
         # Concatinating Both The Paths 
         z2 = torch.cat((x2, y2), 0)
@@ -138,5 +141,5 @@ class InputCascadedCNN(nn.Module):
         return out2 
 
 
-model = InputCascadedCNN()
+model = LocalCascadeCNN()
 print(model)
