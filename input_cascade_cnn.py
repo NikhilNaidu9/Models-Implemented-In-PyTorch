@@ -113,7 +113,7 @@ class InputCascadedCNN(nn.Module):
         out1 = self.output1(z1)
 
         # Concatinating Output From The First CNN And Input
-        input_two = torch.cat((out1, x), 0)
+        input_two = torch.cat((out1, input), 0)
         
         # Forward Pass Through Second CNN First Path
         x2 = self.two_cnn_path_two_conv1(input_two)
