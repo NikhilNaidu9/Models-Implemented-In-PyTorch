@@ -9,6 +9,7 @@ class InputCascadedCNN(nn.Module):
     def __init__(self):
 
         super(InputCascadedCNN, self).__init__()
+        
 
         ''' 
         

@@ -141,5 +141,6 @@ class LocalCascadeCNN(nn.Module):
         return out2 
 
 
+
 model = LocalCascadeCNN()
 print(model)
